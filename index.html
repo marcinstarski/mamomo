@@ -369,6 +369,21 @@
         width: 100%;
       }
 
+      .form-success {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(31, 182, 166, 0.14);
+        border: 1px solid rgba(31, 182, 166, 0.3);
+        color: var(--ink);
+        font-weight: 600;
+        display: none;
+      }
+
+      .form-success.is-visible {
+        display: block;
+      }
+
       .section {
         padding: 60px 0;
       }
@@ -540,26 +555,51 @@
         <div class="form-card" id="growth-plan">
           <h3>Get Your Free SEO Growth Plan</h3>
           <p>Before working together we show you exactly where your growth opportunities are.</p>
-          <form>
+          <form action="https://formsubmit.co/mamomoagency@gmail.com" method="POST">
+            <input type="hidden" name="_subject" value="New SEO Growth Plan Request" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value="https://mamomo.agency/?submitted=1#growth-plan" />
+            <input type="text" name="_honey" style="display: none" tabindex="-1" autocomplete="off" />
             <div class="field">
               <label for="name">Full name</label>
-              <input id="name" name="name" type="text" placeholder="Alex Morgan" required />
+              <input id="name" name="name" type="text" placeholder="Alex Morgan" autocomplete="name" required />
             </div>
             <div class="field">
               <label for="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="alex@business.com" required />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="alex@business.com"
+                autocomplete="email"
+                required
+              />
             </div>
             <div class="field">
               <label for="phone">Phone</label>
-              <input id="phone" name="phone" type="tel" placeholder="(555) 123-4567" required />
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="(555) 123-4567"
+                autocomplete="tel"
+                required
+              />
             </div>
             <div class="field">
-              <label for="website">Website</label>
-              <input id="website" name="website" type="url" placeholder="https://" />
+              <label for="website">Website (optional)</label>
+              <input id="website" name="website" type="text" placeholder="testy.com" autocomplete="url" />
             </div>
             <div class="field">
               <label for="service">Primary service</label>
-              <input id="service" name="service" type="text" placeholder="Roofing, HVAC, Plumbing" />
+              <input
+                id="service"
+                name="service"
+                type="text"
+                placeholder="Roofing, HVAC, Plumbing"
+                autocomplete="organization"
+              />
             </div>
             <div class="field">
               <label for="city">City / Service area</label>
@@ -567,6 +607,9 @@
             </div>
             <button class="primary-btn" type="submit">Request Your Free SEO Growth Plan</button>
           </form>
+          <div class="form-success" role="status" aria-live="polite">
+            Thanks! Your request was sent. We’ll review your site and reach out shortly.
+          </div>
         </div>
       </section>
 
@@ -720,6 +763,7 @@
     <script>
       const highlightTargets = document.querySelectorAll('[data-highlight="form"]');
       const growthPlan = document.getElementById("growth-plan");
+      const formSuccess = document.querySelector(".form-success");
 
       const highlightForm = () => {
         if (!growthPlan) return;
@@ -730,6 +774,14 @@
 
       const handleHashHighlight = () => {
         if (window.location.hash === "#growth-plan") {
+          highlightForm();
+        }
+      };
+
+      const handleSuccessMessage = () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("submitted") === "1" && formSuccess) {
+          formSuccess.classList.add("is-visible");
           highlightForm();
         }
       };
@@ -748,6 +800,7 @@
       window.addEventListener("hashchange", handleHashHighlight);
       window.addEventListener("load", () => {
         setTimeout(handleHashHighlight, 120);
+        handleSuccessMessage();
       });
     </script>
   </body>
